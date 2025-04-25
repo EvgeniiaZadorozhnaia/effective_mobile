@@ -1,0 +1,54 @@
+.filters {
+  background-color: #f9f9fb;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+.filters h2 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.inputGroup label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.3rem;
+}
+
+.inputGroup input {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.inputGroup input:focus {
+  border-color: #a1c4fd;
+  box-shadow: 0 0 0 3px rgba(161, 196, 253, 0.3);
+}
+
+.inputRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}

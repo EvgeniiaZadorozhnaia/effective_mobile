@@ -9,8 +9,8 @@ import { appealsContext } from "../../context/context.jsx";
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
 export default function CreatingForm({ onClose }) {
-  const context = useContext(appealsContext);
-  const { setAppeals } = context;
+  const { setAppeals } = useContext(appealsContext);
+
   const [newAppeal, setNewAppeal] = useState({
     topic: "",
     description: "",

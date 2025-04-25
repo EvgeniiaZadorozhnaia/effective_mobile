@@ -5,9 +5,15 @@ import { appealsContext } from "../../context/context";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
+const statusLabels = {
+  new: "Новое",
+  work: "В работе",
+  finish: "Завершено",
+  cancel: "Отменено",
+};
+
 export default function Table() {
-  const context = useContext(appealsContext);
-  const { appeals, setAppeals, openModal } = context;
+  const { appeals, setAppeals, openModal } = useContext(appealsContext);
 
   useEffect(() => {
     const fetchAppeals = async () => {
@@ -41,30 +47,44 @@ export default function Table() {
       </thead>
       <tbody>
         {appeals.map((appeal) => (
-          <tr key={appeal.id}>
+          <tr
+            key={appeal.id}
+            className={
+              appeal.status === "new"
+                ? styles.rowNew
+                : appeal.status === "work"
+                ? styles.rowWork
+                : appeal.status === "finish"
+                ? styles.rowDone
+                : appeal.status === "cancel"
+                ? styles.rowCancel
+                : ""
+            }>
             <td>{new Date(appeal.createdAt).toLocaleDateString()}</td>
-            <td>{appeal.status}</td>
+            <td>{statusLabels[appeal.status]}</td>
             <td>{appeal.topic}</td>
             <td>{appeal.description}</td>
             <td>{appeal.solution || "-"}</td>
             <td>{appeal.cancel_reason || "-"}</td>
 
             <td>
-              {appeal.status === "new" && (
-                <button onClick={() => handleToWork(appeal.id)}>
-                  В работу
-                </button>
-              )}
-              {appeal.status === "work" && (
-                <>
-                  <button onClick={() => openModal("finish", appeal.id)}>
-                    Завершить
+              <div className={styles.actions}>
+                {appeal.status === "new" && (
+                  <button onClick={() => handleToWork(appeal.id)}>
+                    В работу
                   </button>
-                  <button onClick={() => openModal("cancel", appeal.id)}>
-                    Отменить
-                  </button>
-                </>
-              )}
+                )}
+                {appeal.status === "work" && (
+                  <>
+                    <button onClick={() => openModal("finish", appeal.id)}>
+                      ✅
+                    </button>
+                    <button onClick={() => openModal("cancel", appeal.id)}>
+                      ❌
+                    </button>
+                  </>
+                )}
+              </div>
             </td>
           </tr>
         ))}
