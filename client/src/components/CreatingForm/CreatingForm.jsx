@@ -1,14 +1,16 @@
-import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import Button from "../ui/Button/Button.jsx";
 import Input from "../ui/Input/Input.jsx";
 import TextArea from "../ui/TextArea/TextArea.jsx";
 import styles from "./CreatingForm.module.css";
+import { appealsContext } from "../../context/context.jsx";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
 export default function CreatingForm({ onClose }) {
+  const context = useContext(appealsContext);
+  const { setAppeals } = context;
   const [newAppeal, setNewAppeal] = useState({
     topic: "",
     description: "",
@@ -20,7 +22,11 @@ export default function CreatingForm({ onClose }) {
       alert("Заполните все поля!");
       return;
     }
-    await axios.post(`${VITE_BASE_URL}/${VITE_API}`, newAppeal);
+    const { data } = await axios.post(
+      `${VITE_BASE_URL}/${VITE_API}`,
+      newAppeal
+    );
+    setAppeals((prev) => [...prev, data]);
     setNewAppeal({
       topic: "",
       description: "",

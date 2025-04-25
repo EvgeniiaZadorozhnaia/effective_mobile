@@ -1,27 +1,27 @@
 import "./App.css";
 import CreatingForm from "./components/CreatingForm/CreatingForm";
-import { useState } from "react";
 import Button from "./components/ui/Button/Button";
 import Modal from "./components/Modal/Modal";
+import Table from "./components/Table/Table";
+import { useContext } from "react";
+import { appealsContext } from "./context/context";
+import CancelForm from "./components/CancelForm/CancelForm";
+import FinishForm from "./components/FinishForm/FinishForm";
 
 function App() {
-  const [modalType, setModalType] = useState(null);
+  const context = useContext(appealsContext);
+  const { modal, openModal, closeModal } = context;
 
-  const openModal = (type) => {
-    setModalType(type);
-  };
-
-  const closeModal = () => {
-    setModalType(null);
-  };
-  
   return (
     <>
       <Button onClick={() => openModal("create")}>
         Создать новое обращение
       </Button>
-      <Modal isOpen={modalType !== null} onClose={closeModal}>
-        {modalType === "create" && <CreatingForm onClose={closeModal} />}
+      <Table />
+      <Modal isOpen={modal.type !== null} onClose={closeModal}>
+        {modal.type === "create" && <CreatingForm onClose={closeModal} />}
+        {modal.type === "cancel" && <CancelForm onClose={closeModal} />}
+        {modal.type === "finish" && <FinishForm onClose={closeModal} />}
       </Modal>
     </>
   );

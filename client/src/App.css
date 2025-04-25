@@ -1,5 +1,5 @@
 :root {
- /* colors */
+  /* colors */
   --black: #000;
   --white: #fff;
   --gray: #808080;
@@ -12,8 +12,7 @@
 }
 
 #root {
-  max-width: 1280px;
-  text-align: center;
+  width: 100%;
 }
 
 * {
@@ -29,4 +28,3 @@ body {
   padding: 1rem;
   color: var(--text-color);
 }
-
