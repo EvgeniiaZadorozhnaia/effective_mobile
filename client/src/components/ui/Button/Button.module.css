@@ -1,0 +1,12 @@
+.button {
+  padding: var(--padding);
+  background-color: var(--white);
+  border: 1px solid var(--gray);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow);
+}
