@@ -5,24 +5,31 @@ import Modal from "./components/Modal/Modal";
 import Table from "./components/Table/Table";
 import { useContext } from "react";
 import { appealsContext } from "./context/context";
-import CancelForm from "./components/CancelForm/CancelForm";
-import FinishForm from "./components/FinishForm/FinishForm";
 import Filters from "./components/Filters/Filters";
 import axios from "axios";
+import EditForm from "./components/EditForm/EditForm";
+import { useAlert } from "./context/alertContext";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
 function App() {
-  const { modal, openModal, closeModal, setAppeals } =
-    useContext(appealsContext);
+  const { modal, openModal, setAppeals, appeals } = useContext(appealsContext);
+  const { showAlert } = useAlert();
 
   const cancelAllWork = async () => {
-    await axios.patch(`${VITE_BASE_URL}/${VITE_API}`);
-    setAppeals((prev) =>
-      prev.map((appeal) =>
-        appeal.status === "work" ? { ...appeal, status: "cancel" } : appeal
-      )
-    );
+    const hasWorkAppeals = appeals.some((appeal) => appeal.status === "work");
+    if (!hasWorkAppeals) {
+      showAlert("Нет обращений в работе для отмены", "error");
+      return;
+    } else {
+      await axios.patch(`${VITE_BASE_URL}/${VITE_API}`);
+      setAppeals((prev) =>
+        prev.map((appeal) =>
+          appeal.status === "work" ? { ...appeal, status: "cancel" } : appeal
+        )
+      );
+      showAlert("Все обращения отменены", "success");
+    }
   };
 
   return (
@@ -38,10 +45,11 @@ function App() {
       </div>
 
       <Table />
-      <Modal isOpen={modal.type !== null} onClose={closeModal}>
-        {modal.type === "create" && <CreatingForm onClose={closeModal} />}
-        {modal.type === "cancel" && <CancelForm onClose={closeModal} />}
-        {modal.type === "finish" && <FinishForm onClose={closeModal} />}
+      <Modal isOpen={modal.type !== null}>
+        {modal.type === "create" && <CreatingForm />}
+        {(modal.type === "cancel" || modal.type === "finish") && (
+          <EditForm type={modal.type} />
+        )}
       </Modal>
     </>
   );

@@ -3,6 +3,7 @@ import Button from "../ui/Button/Button";
 import axios from "axios";
 import { appealsContext } from "../../context/context";
 import styles from "./Filters.module.css";
+import { useAlert } from "../../context/alertContext";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
@@ -13,6 +14,7 @@ export default function Filters() {
     endDate: "",
   });
   const { setAppeals } = useContext(appealsContext);
+  const { showAlert } = useAlert();
 
   const fetchAppeals = async (activeFilters = filters) => {
     try {
@@ -34,12 +36,14 @@ export default function Filters() {
 
   const applyFilters = () => {
     fetchAppeals(filters);
+    showAlert("Фильтр применен", "success");
   };
 
   const cancelFilter = () => {
     const cleared = { date: "", startDate: "", endDate: "" };
     setFilters(cleared);
-    fetchAppeals(cleared); // передаём очищенные фильтры вручную
+    fetchAppeals(cleared);
+    showAlert("Фильтр очищен", "success");
   };
 
   return (

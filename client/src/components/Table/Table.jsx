@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from "react";
 import axios from "axios";
 import styles from "./Table.module.css";
 import { appealsContext } from "../../context/context";
+import { useAlert } from "../../context/alertContext";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
@@ -14,6 +15,7 @@ const statusLabels = {
 
 export default function Table() {
   const { appeals, setAppeals, openModal } = useContext(appealsContext);
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     const fetchAppeals = async () => {
@@ -30,9 +32,10 @@ export default function Table() {
     setAppeals((prev) =>
       prev.map((appeal) => (appeal.id === id ? response.data : appeal))
     );
+    showAlert("Обращение отправлено в работу", "success");
   };
 
-  return (
+  return appeals.length ? (
     <table className={styles.table}>
       <thead>
         <tr>
@@ -90,5 +93,7 @@ export default function Table() {
         ))}
       </tbody>
     </table>
+  ) : (
+    <h1>Обращений нет</h1>
   );
 }

@@ -5,11 +5,13 @@ import Input from "../ui/Input/Input.jsx";
 import TextArea from "../ui/TextArea/TextArea.jsx";
 import styles from "./CreatingForm.module.css";
 import { appealsContext } from "../../context/context.jsx";
+import { useAlert } from "../../context/alertContext.jsx";
 
 const { VITE_API, VITE_BASE_URL } = import.meta.env;
 
-export default function CreatingForm({ onClose }) {
-  const { setAppeals } = useContext(appealsContext);
+export default function CreatingForm() {
+  const { setAppeals, closeModal } = useContext(appealsContext);
+  const { showAlert } = useAlert();
 
   const [newAppeal, setNewAppeal] = useState({
     topic: "",
@@ -19,7 +21,7 @@ export default function CreatingForm({ onClose }) {
   async function handleCreateNewAppeal(e) {
     e.preventDefault();
     if (!newAppeal.topic || !newAppeal.description) {
-      alert("Заполните все поля!");
+      showAlert("Заполните все поля!", "error");
       return;
     }
     const { data } = await axios.post(
@@ -31,7 +33,8 @@ export default function CreatingForm({ onClose }) {
       topic: "",
       description: "",
     });
-    onClose();
+    closeModal();
+    showAlert("Обращение успешно создано", "success");
   }
 
   return (

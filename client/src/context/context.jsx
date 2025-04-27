@@ -6,7 +6,6 @@ export const appealsContext = createContext();
 export const AppealsProvider = ({ children }) => {
   const [appeals, setAppeals] = useState([]);
   const [modal, setModal] = useState({ type: null, id: null });
- 
 
   const openModal = (type, id) => {
     setModal({ type, id });
